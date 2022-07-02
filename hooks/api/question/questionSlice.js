@@ -1,23 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const usersApi = createApi({
-  reducerPath: "usersApi",
+export const questionApi = createApi({
+  reducerPath: "questionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND}/users`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND}/question`,
   }),
   endpoints: (builder) => ({
-    getTopRank: builder.query({
-      query: (token) => ({
-        url: "/score/ranking",
+    getQuestion: builder.query({
+      query: ({ token, id }) => ({
+        url: `/${id}`,
         method: "GET",
         headers: {
           Authorization: token,
         },
       }),
     }),
-    getRanking: builder.query({
+    getQuestions: builder.query({
       query: (token) => ({
-        url: `/score/board`,
+        url: "",
         method: "GET",
         headers: {
           Authorization: token,
@@ -27,4 +27,4 @@ export const usersApi = createApi({
   }),
 });
 
-export const { useGetTopRankQuery, useGetRankingQuery } = usersApi;
+export const { useGetQuestionQuery, useGetQuestionsQuery } = questionApi;

@@ -13,6 +13,10 @@ module.exports = {
         "gray-mission-box": "#55656F",
         "black-mission-box": "#0A0E21",
         "purple-search": "#08303C",
+        "slate-lighter": "#3a4459",
+        "slate-darker": "#111733",
+        "slate-dark": "#252F45",
+        slates: "#2D374C",
       },
       keyframes: {
         star: {

@@ -1,33 +1,29 @@
 import React, { useEffect } from "react";
-import Layout from "../components/Layout";
 import { getCookie } from "cookies-next";
+import Loading from "../../components/Loading";
+import Layout from "../../components/Layout";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../hooks/api/auth/authSlice";
-import Loading from "../components/Loading";
-import Table from "../components/Ranking/Table";
+import { setCredentials } from "../../hooks/api/auth/authSlice";
+import { useGetQuestionsQuery } from "../../hooks/api/question/questionSlice";
 import jwtDecode from "jwt-decode";
-
-const Ranking = ({ token, user }) => {
+const Tasks = ({ token, user }) => {
+  const { isSuccess, data = [] } = useGetQuestionsQuery(token);
   const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
-  return user ? (
+  return user && isSuccess ? (
     <Layout>
-      <div className="text-center">
-        <h1 className="md:text-4xl text-2xl font-bold text-success drop-shadow-lg">
-          Ranking
-        </h1>
+      <div className="w-full bg-primary rounded-lg p-3 text-white">
+        test
       </div>
-      <Table token={token} />
     </Layout>
   ) : (
     <Loading />
   );
 };
-
 export const getServerSideProps = ({ req, res }) => {
   const isAuth = getCookie("token", { req, res });
   if (!isAuth) {
@@ -43,4 +39,4 @@ export const getServerSideProps = ({ req, res }) => {
   const user = jwtDecode(isAuth);
   return { props: { token, user } };
 };
-export default Ranking;
+export default Tasks;

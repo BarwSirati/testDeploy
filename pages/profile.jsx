@@ -18,15 +18,20 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useUpdateProfileMutation } from "../hooks/api/user/userSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const schema = yup.object({
+  id: yup.string().required(),
   username: yup.string(),
   name: yup.string(),
   password: yup.string(),
 });
 
 const Profile = ({ token }) => {
-  const { data, isSuccess } = useGetCurrentQuery(token);
+  const [updateProfile] = useUpdateProfileMutation();
+  const { data, isSuccess, refetch, isFetching } = useGetCurrentQuery(token);
   const dispatch = useDispatch();
   useEffect(() => {
     if (isSuccess) {
@@ -40,28 +45,63 @@ const Profile = ({ token }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data = {}) => {
+    for (const key in data) {
+      if (data[key] === "") {
+        delete data[key];
+      }
+    }
+    const query = await updateProfile({ token: token, data: data });
+    if (query.data !== "") {
+      toast.success("UPDATED", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+      });
+      refetch();
+    }
+  };
   return isSuccess ? (
     <Layout>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+      />
       <div className="max-w-6xl md:flex flex-row mx-auto font-bold">
         <div className="md:w-1/2 p-5 text-center text-white">
           <div className="card w-full bg-base-100 shadow-xl">
             <div className="card-body bg-primary p-4 text-2xl">
               <h2>Profile</h2>
             </div>
-            <figure className={`${data.group === 5 ? "md:w-96 my-3" : "w-48"}  mx-auto`}>
+            <figure
+              className={`${
+                data.group === 5 ? "md:w-96 my-3" : "w-48"
+              }  mx-auto`}
+            >
               <Image src={PlanetImageSwitch(data.group)} alt="profile" />
             </figure>
             <div className="flex p-5">
               <div className="w-1/2">
                 <h2 className="text-xl">Username</h2>
                 <br />
-                {data.username}
+
+                {isFetching ? "Loading" : data.username}
               </div>
               <div className="w-1/2">
                 <h2 className="text-xl">NickName</h2>
                 <br />
-                {data.name}
+                {isFetching ? "Loading" : data.name}
               </div>
             </div>
             <div className="py-4">
@@ -107,38 +147,54 @@ const Profile = ({ token }) => {
       <div>
         <input type="checkbox" id="my-modal" className="modal-toggle" />
         <div className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-2xl text-center text-white">
-              <FontAwesomeIcon icon={faUser} /> &nbsp; Your Profile
-            </h3>
-            <div className="mt-5 space-y-5">
-              <input
-                type="text"
-                placeholder="Change Username"
-                className="input input-bordered w-full border-primary"
-              />
-              <input
-                type="text"
-                placeholder="Change Nickname"
-                className="input input-bordered w-full border-primary"
-              />
-              <input
-                type="password"
-                placeholder="Change Password"
-                className="input input-bordered w-full border-primary"
-              />
-              <div className="w-full flex justify-center space-x-5">
-                <button className="btn btn-warning">
-                  <FontAwesomeIcon icon={faSave} className="text-xl" /> &nbsp;
-                  Save
-                </button>
-                <label htmlFor="my-modal" className="btn btn-error">
-                  <FontAwesomeIcon icon={faXmark} className="text-xl" /> &nbsp;
-                  Close
-                </label>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="modal-box">
+              <h3 className="font-bold text-2xl text-center text-white">
+                <FontAwesomeIcon icon={faUser} /> &nbsp; Your Profile
+              </h3>
+              <div className="mt-5 space-y-5">
+                <input
+                  type="hidden"
+                  name="id"
+                  value={data.id}
+                  {...register("id")}
+                />
+                <input
+                  type="text"
+                  placeholder="Change Username"
+                  name="username"
+                  className="input input-bordered w-full border-primary"
+                  {...register("username")}
+                />
+                <input
+                  type="text"
+                  placeholder="Change Nickname"
+                  name="name"
+                  className="input input-bordered w-full border-primary"
+                  {...register("name")}
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Change Password"
+                  className="input input-bordered w-full border-primary"
+                  {...register("password")}
+                />
+                <div className="w-full flex justify-center space-x-5">
+                  <button className="btn btn-warning">
+                    <label htmlFor="my-modal">
+                      <FontAwesomeIcon icon={faSave} className="text-xl" />{" "}
+                      &nbsp; Save
+                    </label>
+                  </button>
+                  <label htmlFor="my-modal" className="btn btn-error">
+                    <FontAwesomeIcon icon={faXmark} className="text-xl" />{" "}
+                    &nbsp; Close
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </Layout>

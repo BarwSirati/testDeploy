@@ -6,7 +6,7 @@ import Link from "next/link";
 import { deleteCookie } from "cookies-next";
 const path = [
   { key: 1, name: "HOME", to: "/", class: "nav-menu" },
-  { key: 2, name: "TASKS", to: "/task", class: "nav-menu" },
+  { key: 2, name: "TASKS", to: "/tasks", class: "nav-menu" },
   { key: 3, name: "RANKING", to: "/ranking", class: "nav-menu" },
   { key: 4, name: "PROFILE", to: "/profile", class: "nav-menu" },
   { key: 5, name: "GUIDE", to: "/guide", class: "nav-menu" },
@@ -34,7 +34,10 @@ const Navbar = () => {
                 <Link key={link.key} href={link.to}>
                   <li
                     className={`cursor-pointer text-white text-xl font-bold hover:border-b-4 hover:border-red-logo ${
-                      router.asPath === link.to ? "nav-menu-active" : ""
+                      router.asPath === link.to ||
+                      (link.key === 2 && router.pathname === "/tasks/[...id]")
+                        ? "nav-menu-active"
+                        : ""
                     }`}
                   >
                     <a>{link.name}</a>

@@ -11,11 +11,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import PlanetImageSwitch from "../PlanetImageSwitch";
-import { useGetRankingQuery } from "../../hooks/api/users/usersSlice";
+import { useGetRankingQuery } from "../../hooks/api/user/userSlice";
 import Image from "next/image";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
 const Table = ({ token }) => {
-  const { isLoading, isSuccess, data = [] } = useGetRankingQuery(token);
+  const router = useRouter();
+  const {
+    isLoading,
+    isSuccess,
+    data = [],
+    isError,
+  } = useGetRankingQuery(token);
+  if (isError) {
+    router.push("/login");
+    deleteCookie("token");
+  }
   const [pageNumber, setPageNumber] = useState(0);
   const usersPerPage = 5;
   const pagesVisited = pageNumber * usersPerPage;

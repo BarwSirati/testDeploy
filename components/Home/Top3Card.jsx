@@ -1,9 +1,16 @@
 import React from "react";
 import PlanetImageSwitch from "../PlanetImageSwitch";
 import Image from "next/image";
-import { useGetTopRankQuery } from "../../hooks/api/users/usersSlice";
+import { useGetTopRankQuery } from "../../hooks/api/user/userSlice";
+import { useRouter } from "next/router";
+import { deleteCookie } from "cookies-next";
 const Top3Card = ({ token }) => {
-  const { isSuccess, data = [] } = useGetTopRankQuery(token);
+  const router = useRouter();
+  const { isSuccess, data = [], isError } = useGetTopRankQuery(token);
+  if (isError) {
+    deleteCookie("token");
+    router.push("/login");
+  }
   return (
     <>
       {data.length === 0 ? (

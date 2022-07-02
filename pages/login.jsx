@@ -41,7 +41,12 @@ const Login = () => {
     );
     if (res.status === 200) {
       const token = res.data.accessToken;
-      setCookie("token", token);
+      setCookie("token", token, {
+        maxAge: 7 * 24 * 60 * 60,
+        path: "/",
+        sameSite: "strict",
+        secure: true,
+      });
       const user = jwtDecode(token);
       dispatch(setCredentials({ ...user }));
       router.push("/");

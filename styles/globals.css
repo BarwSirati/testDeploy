@@ -512,7 +512,7 @@ body {
 }
 
 .mercury {
-  position: absolute;
+  position: relative;
   top: -300px;
   left: 10%;
   z-index: 1;
@@ -531,43 +531,43 @@ body {
 }
 
 .star01 {
-  @apply top-[-150px] left-[350px] animate-star1;
+  @apply -top-72 left-72 animate-star1;
 }
 
 .star02 {
-  @apply top-[50px] right-[450px] animate-star1;
+  @apply top-10 left-96 animate-star2;
 }
 
 .star03 {
-  @apply top-[1230px] left-[480px] animate-star1;
+  @apply -top-96 left-[500px] animate-star3;
 }
 
 .star04 {
-  @apply top-[1375px] right-[450px] animate-star1;
+  @apply top-[1050px] left-11 animate-star1;
 }
 
 .star05 {
-  @apply top-[300px] left-[700px] animate-star2;
+  @apply -top-[200px] right-24 animate-star1;
 }
 
 .star06 {
-  @apply top-[800px] right-[150px] animate-star2;
+  @apply top-[200px] right-56 animate-star2;
 }
 
 .star07 {
-  @apply top-[1350px] left-[50px] animate-star2;
+  @apply top-[800px] right-56 animate-star2;
 }
 
 .star08 {
-  @apply top-[580px] left-[300px] animate-star3;
+  @apply top-[750px] left-56  animate-star3;
 }
 
 .star09 {
-  @apply top-[720px] left-[800px] animate-star3;
+  @apply top-[1100px] right-20  animate-star3;
 }
 
 .star10 {
-  @apply top-[900px] right-[350px] animate-star3;
+  @apply top-96 right-96 animate-star3;
 }
 
 @media only screen and (max-width: 768px) {
@@ -860,4 +860,49 @@ progress::-moz-progress-bar {
   .star {
     display: block !important;
   }
+}
+.problem-tab {
+  @apply flex flex-row rounded-lg bg-slate-lighter space-x-2 font-semibold;
+}
+.problem-tab-button {
+  @apply px-3 py-1 rounded-lg text-sm;
+  user-select: none;
+}
+.problem-tab-button:focus {
+  outline: none;
+}
+.problem-tab-button:hover {
+  @apply cursor-pointer bg-slate-lighter;
+}
+.problem-tab-button[aria-selected="true"] {
+  @apply cursor-auto bg-slates;
+}
+
+.problem-contents {
+  @apply p-5 overflow-y-visible md:overflow-y-scroll;
+}
+.problem-content > hr {
+  @apply my-4 border-slate-600;
+}
+.prompt {
+  font-family: "Prompt", sans-serif !important;
+}
+.code-block {
+  @apply w-full block p-4 bg-slate-900 overflow-x-scroll border border-slate-500 whitespace-pre rounded-lg;
+}
+
+.consolas {
+  font-family: Consolas, "courier new" !important;
+}
+
+.tableDetail {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableDetail,
+td,
+th {
+  border: 1px solid;
+  padding: 10px;
 }

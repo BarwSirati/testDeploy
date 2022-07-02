@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
 import { getCookie } from "cookies-next";
-import Planet from "../components/Home/Planet";
 import Loading from "../components/Loading";
 import Layout from "../components/Layout";
-import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { useGetCurrentQuery } from "../hooks/api/user/userSlice";
+import { setCredentials } from "../hooks/api/auth/authSlice";
+import jwtDecode from "jwt-decode";
+import Planet from "../components/Home/Planet";
+import Link from "next/link";
 import Image from "next/image";
 import RocketJet from "../public/pictures/Rocket.png";
 import Top3Card from "../components/Home/Top3Card";
-import { setCredentials } from "../hooks/api/auth/authSlice";
-const Home = ({ token }) => {
-  const { data, isSuccess } = useGetCurrentQuery(token);
+
+
+const Home = ({ token, user }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isSuccess) {
-      dispatch(setCredentials(data));
+    if (user) {
+      dispatch(setCredentials(user));
     }
-  }, [data, dispatch, isSuccess]);
-  return isSuccess ? (
+  }, [dispatch, user]);
+  return user ? (
     <Layout>
       <div className="text-center relative mt-40 z-10 hero">
         <div className="hero-content">
@@ -46,7 +47,7 @@ const Home = ({ token }) => {
           <h1 className="md:text-5xl text-3xl">Top 3 ranking</h1>
         </div>
       </div>
-      <div className="relative md:-mt-56 md:mb-56 ">
+      <div className="relative lg:-mt-72 lg:mb-56 ">
         <Top3Card token={token} />
       </div>
     </Layout>
@@ -67,7 +68,8 @@ export const getServerSideProps = ({ req, res }) => {
     };
   }
   const token = `Bearer ` + isAuth;
-  return { props: { token } };
+  const user = jwtDecode(isAuth);
+  return { props: { token, user } };
 };
 
 export default Home;
