@@ -14,14 +14,10 @@ const Tasks = ({ token, user }) => {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
-  return user && isSuccess ? (
+  return (
     <Layout>
-      <div className="w-full bg-primary rounded-lg p-3 text-white">
-        test
-      </div>
+      <div className="w-full bg-primary rounded-lg p-3 text-white">test</div>
     </Layout>
-  ) : (
-    <Loading />
   );
 };
 export const getServerSideProps = ({ req, res }) => {

@@ -7,8 +7,8 @@ export const questionApi = createApi({
   }),
   endpoints: (builder) => ({
     getQuestion: builder.query({
-      query: ({ token, id }) => ({
-        url: `/${id}`,
+      query: ({ token, questionId }) => ({
+        url: `/${questionId}`,
         method: "GET",
         headers: {
           Authorization: token,

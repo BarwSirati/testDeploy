@@ -416,10 +416,10 @@
     "@typescript-eslint/types" "5.30.0"
     eslint-visitor-keys "^3.3.0"
 
-"@uiw/react-codemirror@^4.9.5":
-  version "4.9.5"
-  resolved "https://registry.yarnpkg.com/@uiw/react-codemirror/-/react-codemirror-4.9.5.tgz#0f66c09dfc355baef5a7020f206da8db90bae223"
-  integrity sha512-KHgP/PII9Gv4iEUzbdO95qpSSPy27iSHzxQ01mBPWC4UvzuA0eQY2h64gzi/ld68esbKMGYoevgOBPCRJwNN1A==
+"@uiw/react-codemirror@^4.10.3":
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/@uiw/react-codemirror/-/react-codemirror-4.10.3.tgz#fb5828e8c27edb99a6d08db80bd8e45c5f210951"
+  integrity sha512-5bu2X5Uls5vgHYMWtQFYzMzxwCLSO/axob3VzjPa78F5AyQptBqeBf2Jsv/+egx2SF0hGYdUUW6D0ftFVZPtgQ==
   dependencies:
     "@babel/runtime" ">=7.11.0"
     "@codemirror/theme-one-dark" "^6.0.0"
@@ -664,7 +664,7 @@ clsx@^1.1.1:
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
-codemirror@^6.0.0, codemirror@^6.0.1:
+codemirror@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-6.0.1.tgz#62b91142d45904547ee3e0e0e4c1a79158035a29"
   integrity sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==

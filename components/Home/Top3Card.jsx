@@ -6,7 +6,12 @@ import { useRouter } from "next/router";
 import { deleteCookie } from "cookies-next";
 const Top3Card = ({ token }) => {
   const router = useRouter();
-  const { isSuccess, data = [], isError } = useGetTopRankQuery(token);
+  const {
+    isSuccess,
+    data = [],
+    isError,
+    isFetching,
+  } = useGetTopRankQuery(token);
   if (isError) {
     deleteCookie("token");
     router.push("/login");
@@ -18,6 +23,14 @@ const Top3Card = ({ token }) => {
           <div className="card-body ">
             <h2 className="card-title text-2xl text-white justify-center">
               No Data Contents
+            </h2>
+          </div>
+        </div>
+      ) : isFetching ? (
+        <div className="card md:w-96 lg:-my-16 mt-10 bg-base-100 shadow-xl mx-auto">
+          <div className="card-body ">
+            <h2 className="card-title text-2xl text-white justify-center">
+              Loading
             </h2>
           </div>
         </div>

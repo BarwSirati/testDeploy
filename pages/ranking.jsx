@@ -14,7 +14,7 @@ const Ranking = ({ token, user }) => {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
-  return user ? (
+  return (
     <Layout>
       <div className="text-center">
         <h1 className="md:text-4xl text-2xl font-bold text-success drop-shadow-lg">
@@ -23,8 +23,6 @@ const Ranking = ({ token, user }) => {
       </div>
       <Table token={token} />
     </Layout>
-  ) : (
-    <Loading />
   );
 };
 

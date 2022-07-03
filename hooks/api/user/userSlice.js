@@ -5,7 +5,6 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND}/users`,
   }),
-  tagTypes: ["Rank"],
   endpoints: (builder) => ({
     getCurrent: builder.query({
       query: (token) => ({
@@ -24,7 +23,6 @@ export const userApi = createApi({
           Authorization: token,
         },
       }),
-      providesTags: ["Rank"],
     }),
     getRanking: builder.query({
       query: (token) => ({
@@ -34,7 +32,6 @@ export const userApi = createApi({
           Authorization: token,
         },
       }),
-      providesTags: ["Rank"],
     }),
     updateProfile: builder.mutation({
       query: ({ token, data }) => ({

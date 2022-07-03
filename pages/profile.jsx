@@ -4,7 +4,7 @@ import { getCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { useGetCurrentQuery } from "../hooks/api/user/userSlice";
 import { setCredentials } from "../hooks/api/auth/authSlice";
-import Loading from "../components/Loading";
+import { deleteCookie } from "cookies-next";
 import ProgressBar from "../components/Profile/ProgressBar";
 import PlanetImageSwitch from "../components/PlanetImageSwitch";
 import Image from "next/image";
@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useUpdateProfileMutation } from "../hooks/api/user/userSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const schema = yup.object({
@@ -31,7 +31,9 @@ const schema = yup.object({
 
 const Profile = ({ token }) => {
   const [updateProfile] = useUpdateProfileMutation();
-  const { data, isSuccess, refetch, isFetching } = useGetCurrentQuery(token);
+  const { data, isSuccess, refetch, isFetching, isError } =
+    useGetCurrentQuery(token);
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (isSuccess) {
@@ -65,32 +67,29 @@ const Profile = ({ token }) => {
       refetch();
     }
   };
-  return isSuccess ? (
+  if (isError) {
+    router.push("/login");
+    deleteCookie("token");
+  }
+  return (
     <Layout>
-      <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-      />
       <div className="max-w-6xl md:flex flex-row mx-auto font-bold">
         <div className="md:w-1/2 p-5 text-center text-white">
           <div className="card w-full bg-base-100 shadow-xl">
             <div className="card-body bg-primary p-4 text-2xl">
               <h2>Profile</h2>
             </div>
-            <figure
-              className={`${
-                data.group === 5 ? "md:w-96 my-3" : "w-48"
-              }  mx-auto`}
-            >
-              <Image src={PlanetImageSwitch(data.group)} alt="profile" />
-            </figure>
+            {!isFetching ? (
+              <figure
+                className={`${
+                  data.group === 5 ? "md:w-96 my-3" : "w-48"
+                }  mx-auto`}
+              >
+                <Image src={PlanetImageSwitch(data.group)} alt="profile" />
+              </figure>
+            ) : (
+              <figure className="w-48 mx-auto h-52">Loading</figure>
+            )}
             <div className="flex p-5">
               <div className="w-1/2">
                 <h2 className="text-xl">Username</h2>
@@ -123,11 +122,15 @@ const Profile = ({ token }) => {
               <div className="flex p-11">
                 <div className="w-1/2 space-y-5 text-success">
                   <h2 className="text-2xl">RANK</h2>
-                  <h2 className="text-3xl">{data.rank}</h2>
+                  <h2 className="text-3xl">
+                    {isFetching ? "Loading" : data.rank}
+                  </h2>
                 </div>
                 <div className="w-1/2 space-y-5 text-warning">
                   <h2 className="text-2xl">SCORE</h2>
-                  <h2 className="text-3xl">{data.score}</h2>
+                  <h2 className="text-3xl">
+                    {isFetching ? "Loading" : data.score}
+                  </h2>
                 </div>
               </div>
             </div>
@@ -137,8 +140,14 @@ const Profile = ({ token }) => {
                 <h2>Progress</h2>
               </div>
               <div className="p-6 space-y-6">
-                <h2 className="text-3xl">{data.progress}/100</h2>
-                <ProgressBar value={data.progress} />
+                {isFetching ? (
+                  <h2 className="text-3xl">Loading</h2>
+                ) : (
+                  <>
+                    <h2 className="text-3xl">{data.progress}/100</h2>
+                    <ProgressBar value={data.progress} />
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -156,7 +165,7 @@ const Profile = ({ token }) => {
                 <input
                   type="hidden"
                   name="id"
-                  value={data.id}
+                  value={isSuccess && data.id}
                   {...register("id")}
                 />
                 <input
@@ -198,8 +207,6 @@ const Profile = ({ token }) => {
         </div>
       </div>
     </Layout>
-  ) : (
-    <Loading />
   );
 };
 

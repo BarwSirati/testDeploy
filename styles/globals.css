@@ -11,7 +11,7 @@ body {
   background-color: #0b0f22;
 }
 
-::-webkit-scrollbar {
+.layout::-webkit-scrollbar {
   display: none;
 }
 
@@ -539,7 +539,7 @@ body {
 }
 
 .star03 {
-  @apply -top-96 left-[500px] animate-star3;
+  @apply -top-80 left-[500px] animate-star3;
 }
 
 .star04 {
@@ -888,21 +888,57 @@ progress::-moz-progress-bar {
   font-family: "Prompt", sans-serif !important;
 }
 .code-block {
-  @apply w-full block p-4 bg-slate-900 overflow-x-scroll border border-slate-500 whitespace-pre rounded-lg;
+  @apply w-full block p-4 bg-slate-900 overflow-hidden border border-slate-500 whitespace-pre rounded-lg;
 }
 
 .consolas {
   font-family: Consolas, "courier new" !important;
 }
 
-.tableDetail {
-  width: 100%;
-  border-collapse: collapse;
+.tableBorder{
+  @apply border-collapse border-solid border-[1px] p-[10px];
+}
+.tableBorder thead tr th{
+  @apply border-collapse border-solid border-[1px] p-[10px];
+}
+.tableBorder tbody tr td{
+  @apply border-collapse border-solid border-[1px] p-[10px];
 }
 
-.tableDetail,
-td,
-th {
-  border: 1px solid;
-  padding: 10px;
+
+
+/* width */
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+}
+
+/* Handle */
+.scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-success;
+}
+
+/* Handle on hover */
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-700;
+}
+
+.cm-line {
+  font-family: Consolas, "courier new" !important;
+  font-size: 16px !important;
+}
+.cm-gutters {
+  font-family: Consolas, "courier new" !important;
+  font-size: 15px !important;
+}
+.cm-activeLineGutter {
+  background: transparent !important;
+}
+.cm-scroller {
+  width: 100%;
+  overflow-x: hidden !important;
 }

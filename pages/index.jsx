@@ -11,7 +11,6 @@ import Image from "next/image";
 import RocketJet from "../public/pictures/Rocket.png";
 import Top3Card from "../components/Home/Top3Card";
 
-
 const Home = ({ token, user }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -19,7 +18,7 @@ const Home = ({ token, user }) => {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
-  return user ? (
+  return (
     <Layout>
       <div className="text-center relative mt-40 z-10 hero">
         <div className="hero-content">
@@ -51,8 +50,6 @@ const Home = ({ token, user }) => {
         <Top3Card token={token} />
       </div>
     </Layout>
-  ) : (
-    <Loading />
   );
 };
 
