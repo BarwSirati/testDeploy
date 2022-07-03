@@ -104,12 +104,12 @@ const Submit = ({ token, userId, questionId, submit }) => {
                 </h1>
               </a>
               <hr />
-              <p className="my-5 indent-10 prompt md:whitespace-pre-wrap">{}</p>
+              <p className="my-5 indent-10 prompt md:whitespace-pre-wrap">{isFetching ? "Loading" : data.detail}</p>
               <div>
                 <h1 className="text-secondary">Example : </h1>
                 <br />
                 <div className="relative overflow-x-auto">
-                  <table className="tableBorder">
+                  <table className="tableBorder" width="100%">
                     <thead>
                       <tr>
                         <th className="prompt">Input</th>
@@ -135,7 +135,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
               </div>
               {example}
               {data.image && (
-                <>
+                <div className="mt-5">
                   <h1 className="text-success">Image : </h1>
                   <br />
                   <div className="text-center">
@@ -146,8 +146,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
                       alt="image"
                     />
                   </div>
-                  <br />
-                </>
+                </div>
               )}
               {data.note && (
                 <>
