@@ -10,9 +10,8 @@ import { useGetQuestionQuery } from "../../hooks/api/question/questionSlice";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import CodeMirror from "@uiw/react-codemirror";
-import { cpp, cppLanguage } from "@codemirror/lang-cpp";
+import { cpp } from "@codemirror/lang-cpp";
 import { useCompileCodeMutation } from "../../hooks/api/submit/compileSlice";
-import { useGetSubmitQuery } from "../../hooks/api/submit/submitSlice";
 import jwtDecode from "jwt-decode";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -179,13 +178,13 @@ const Submit = ({ token, userId, questionId, submit }) => {
                   value={submit.sourceCode ? submit.sourceCode : ""}
                   extensions={[cpp()]}
                   theme="dark"
-                  lang={cppLanguage}
                   className="whitespace-pre "
                   placeholder={"🔥🔥 CODE HERE 🔥🔥"}
                   spellCheck={true}
                   onChange={(value) => {
                     setSourceCode(value);
                   }}
+                  aria-label="code"
                 />
               </div>
               <div className="text-right p-1">
