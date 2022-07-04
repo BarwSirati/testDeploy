@@ -19,8 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useUpdateProfileMutation } from "../hooks/api/user/userSlice";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Loading from "../components/Loading";
 
 const schema = yup.object({
   id: yup.string().required(),
@@ -55,15 +54,6 @@ const Profile = ({ token }) => {
     }
     const query = await updateProfile({ token: token, data: data });
     if (query.data !== "") {
-      toast.success("UPDATED", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-      });
       refetch();
     }
   };
@@ -71,7 +61,7 @@ const Profile = ({ token }) => {
     router.push("/login");
     deleteCookie("token");
   }
-  return (
+  return isSuccess ? (
     <Layout>
       <div className="max-w-6xl md:flex flex-row mx-auto font-bold">
         <div className="md:w-1/2 p-5 text-center text-white">
@@ -165,7 +155,7 @@ const Profile = ({ token }) => {
                 <input
                   type="hidden"
                   name="id"
-                  value={isSuccess && data.id}
+                  value={data.id}
                   {...register("id")}
                 />
                 <input
@@ -207,6 +197,8 @@ const Profile = ({ token }) => {
         </div>
       </div>
     </Layout>
+  ) : (
+    <Loading />
   );
 };
 

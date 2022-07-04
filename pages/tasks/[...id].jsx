@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Loading from "../../components/Loading";
-import { useSelector } from "react-redux";
-import { setCredentials, userSelector } from "../../hooks/api/auth/authSlice";
+import { setCredentials } from "../../hooks/api/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { getCookie } from "cookies-next";
 import { useGetCurrentQuery } from "../../hooks/api/user/userSlice";
@@ -13,7 +12,6 @@ import CodeMirror from "@uiw/react-codemirror";
 import { cpp } from "@codemirror/lang-cpp";
 import { useCompileCodeMutation } from "../../hooks/api/submit/compileSlice";
 import jwtDecode from "jwt-decode";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const Submit = ({ token, userId, questionId, submit }) => {
@@ -21,14 +19,12 @@ const Submit = ({ token, userId, questionId, submit }) => {
   const [sourceCode, setSourceCode] = useState();
   const dispatch = useDispatch();
   const router = useRouter();
-  const user = useSelector(userSelector);
   const getCurrentQuery = useGetCurrentQuery(token);
   const [reload, setReload] = useState(false);
   const {
     data = {},
     isFetching,
     isError,
-    refetch,
   } = useGetQuestionQuery({
     token: token,
     questionId: questionId,
@@ -71,7 +67,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = {
-      userId: user.user.id,
+      userId: userId,
       questionId: questionId,
       sourceCode: sourceCode,
     };
@@ -104,7 +100,9 @@ const Submit = ({ token, userId, questionId, submit }) => {
                 </h1>
               </a>
               <hr />
-              <p className="my-5 indent-10 prompt md:whitespace-pre-wrap">{isFetching ? "Loading" : data.detail}</p>
+              <p className="my-5 indent-10 prompt md:whitespace-pre-wrap">
+                {isFetching ? "Loading" : data.detail}
+              </p>
               <div>
                 <h1 className="text-secondary">Example : </h1>
                 <br />
@@ -160,7 +158,15 @@ const Submit = ({ token, userId, questionId, submit }) => {
             <div className="p-4 bg-base-100 flex text-center space-x-5">
               <div className="w-1/2 bg-slate-900 p-3 rounded-lg font-bold">
                 <h1>RESULT</h1>
-                <h1 className="text-2xl">
+                <h1
+                  className={`text-2xl ${
+                    submit
+                      ? submit.status === true
+                        ? "text-success"
+                        : "text-error"
+                      : "-"
+                  }`}
+                >
                   {submit.result ? submit.result : "-"}
                 </h1>
               </div>
@@ -186,10 +192,18 @@ const Submit = ({ token, userId, questionId, submit }) => {
                   aria-label="code"
                 />
               </div>
-              <div className="text-right p-1">
-                <button type="submit" className="btn btn-warning">
-                  SUBMIT
-                </button>
+              <div className="p-1 flex">
+                <div className="ml-auto space-x-4">
+                  <button
+                    className="btn btn-error"
+                    onClick={() => router.back()}
+                  >
+                    BACK
+                  </button>
+                  <button type="submit" className="btn btn-warning">
+                    SUBMIT
+                  </button>
+                </div>
               </div>
             </form>
           </div>
