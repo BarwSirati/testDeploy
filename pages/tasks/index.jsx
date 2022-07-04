@@ -78,6 +78,11 @@ const Tasks = ({ token, user }) => {
       paramsData = {
         complete: complete,
       };
+    } else if (name) {
+      const data = questions.filter((question) =>
+        question.title.toLowerCase().includes(name)
+      );
+      setQuestions(data);
     } else if (unit == "" || complete == "") {
       paramsData = {
         unit: "",
@@ -153,7 +158,7 @@ const Tasks = ({ token, user }) => {
             className="rounded-md p-2 w-full focus:outline-none bg-purple-search bg-opacity-50"
             onChange={filterUnit}
           >
-            <option value="">Unit</option>
+            <option value="">All Unit</option>
             <option value="Basic I/O">Basic I/O</option>
             <option value="If-Else">If-Else</option>
             <option value="Loop">Loop</option>
